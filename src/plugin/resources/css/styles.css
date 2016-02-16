@@ -1,0 +1,17 @@
+ul.list-simple{
+    list-style: none;
+    margin-left: 0;
+    padding-left: 0;
+}
+ul.list-simple li {
+    margin-top: .5em;
+    padding-left: 0;
+}
+ul.list-simple ul.list-simple {
+    margin-left: 1em;
+    padding-left: 1em;
+}
+
+ul.list-simple ul.list-simple li {
+    padding-left: 1em;
+}

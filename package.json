@@ -1,0 +1,8 @@
+{
+    "name": "kbase-ui-plugin-methodview",
+    "version": "0.1.0",
+    "keywords": ["util", "functional", "server", "client", "browser"],
+    "author": "kbase",
+    "contributors": [],
+    "dependencies": {}
+}

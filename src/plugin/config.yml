@@ -1,0 +1,69 @@
+## YAML Template.
+---
+package:
+    author: Erik Pearson
+    name: methodview
+    description: The method and app viewers
+    date: February, 13, 2016
+source:
+    styles:
+        -
+            file: styles.css                
+install:
+    widgets:
+        -
+            module: plugins/methodview/modules/methodPanel
+            id: methodview_methodPanel
+            type: factory
+        -
+            module: plugins/methodview/modules/appPanel
+            id: methodview_appPanel
+            type: factory
+        -
+            module: plugins/methodview/modules/widgets/methodView
+            id: methodview_methodView
+            type: factory
+        -
+            module: plugins/methodview/modules/widgets/appView
+            id: methodview_appView
+            type: factory
+    routes:
+        -
+            widget: methodview_appPanel
+            path:
+                - narrativestore
+                - app
+                -
+                    type: param
+                    name: appId
+        -
+            widget: methodview_methodPanel
+            path:
+                    - narrativestore
+                    - method
+                    -
+                        type: param
+                        name: methodId
+                    -
+                        type: param
+                        name: methodTag
+                        optional: true
+        -
+            path:
+                - methodview
+                -
+                    type: param
+                    name: methodId
+                -
+                    type: param
+                    name: methodTag
+                    optional: true
+            widget: methodview_methodPanel
+        -
+            path: 
+                - appview
+                -
+                    type: param
+                    name: appId
+            widget: methodview_appPanel
+                
