@@ -2,63 +2,49 @@
 /*jslint white:true,browser:true*/
 define([
     'kb/common/html',
-    'kb/widget/widgetSet'
-], function (html,WidgetSet) {
+    './utils'
+], function (html,utils) {
     'use strict';
     function factory(config) {
-        var container, runtime = config.runtime, 
-            widgetSet = WidgetSet.make({runtime: runtime}),
-            layout,
-            t = html.tag,
-            div = t('div');
-        
-        // IMPLEMENTATION
-        function renderLayout() {
-            return div({class: 'container-fluid'}, [
-                div({class: 'col-md-12'}, [
-                    div({id: widgetSet.addWidget('methodview_methodView')})
-                ])
-            ]);
-        }
-        // We need to create the initial layout first, in order for the widgets
-        // to be available for the init phase!
-        layout = renderLayout();
-        
+        var container, runtime = config.runtime;
         
         // API
-        
-        function init(config) {
-            return widgetSet.init(config);
-        }
         function attach(node) {            
             container = node;
-            container.innerHTML = layout;
-            return widgetSet.attach(node);
         }
         function start(params) {
-            return widgetSet.start(params);
-        }
-        function run(params) {
-            return widgetSet.run(params);
+            // The method id may have a slash in it, in which case it is a modern
+            // catalog-based method; if not, we need to use a standard module
+            // for legacy methods.
+            
+            var methodModule, methodPath;
+            
+            // Two forms -
+            // methodId
+            // module/methodId/tag
+            // but the app catalog expects a form like l.m
+            
+            methodModule = params.methodModule || 'l.m';
+            
+            methodPath = ['appcatalog', 'app', methodModule, params.methodId, params.methodTag].filter(function (component) {
+                if (typeof component === 'undefined') {
+                    return false;
+                }
+                return true;
+            });
+            
+            runtime.send('app', 'navigate', {
+                path: utils.makePath(methodPath),
+                replace: true
+            });
         }
         function stop() {
-            return widgetSet.stop();
-        }
-        function detach() {
-            return widgetSet.detach();
-        }
-        function destroy() {
-            return widgetSet.destroy();
         }
         
         return {
-            init: init,
             attach: attach,
             start: start,
-            run: run,
-            stop: stop,
-            detach: detach,
-            destroy: destroy
+            stop: stop
         };
     }
     
