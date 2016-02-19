@@ -19,7 +19,14 @@ define([
                 }).join('=');
             }).join('&');
         }
-        return [path, queryString].join('?');
+        return [path, queryString]
+            .filter(function (component) {
+                if (typeof component === 'undefined') {
+                    return false;
+                }
+                return true;
+            })
+            .join('?');
 
     }
     function makeHashPath(pathList, query) {
