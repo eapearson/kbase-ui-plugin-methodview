@@ -20,10 +20,6 @@ install:
             id: methodview_appPanel
             type: factory
         -
-            module: plugins/methodview/modules/widgets/methodView
-            id: methodview_methodView
-            type: factory
-        -
             module: plugins/methodview/modules/widgets/appView
             id: methodview_appView
             type: factory
@@ -36,6 +32,7 @@ install:
                 -
                     type: param
                     name: appId
+        # legacy, canonical method reference
         -
             widget: methodview_methodPanel
             path:
@@ -44,26 +41,30 @@ install:
                     -
                         type: param
                         name: methodId
+        # new, incomplete method reference (no tag)
+        -
+            widget: methodview_methodPanel
+            path:
+                    - narrativestore
+                    - method
                     -
                         type: param
-                        name: methodTag
-                        optional: true
+                        name: methodModule
+                    -
+                        type: param
+                        name: methodId
+        # new, canonical method (sdk app) reference
         -
-            path:
-                - methodview
-                -
-                    type: param
-                    name: methodId
-                -
-                    type: param
-                    name: methodTag
-                    optional: true
             widget: methodview_methodPanel
-        -
-            path: 
-                - appview
-                -
-                    type: param
-                    name: appId
-            widget: methodview_appPanel
-                
+            path:
+                    - narrativestore
+                    - method
+                    -
+                        type: param
+                        name: methodModule
+                    -
+                        type: param
+                        name: methodId
+                    -
+                        type: param
+                        name: methodTag                
