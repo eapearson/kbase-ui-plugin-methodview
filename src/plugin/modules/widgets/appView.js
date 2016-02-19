@@ -20,13 +20,20 @@ define([
         // IMPLEMENTATION
 
         function renderNarrativeMethodStoreInfo(status, params) {
-            var methodSpecUrl = [
+            var methodSpecList = [
                 status.git_spec_url,
                 'tree',
                 status.git_spec_branch,
                 'apps',
                 params.appId
-            ].join('/'),
+            ],
+                label = methodSpecList.map(function (component, index) {
+                    if (index > 0) {
+                        return '&#8203;' + component;
+                    }
+                    return component;
+                }).join('/'),
+                url = methodSpecList.join('/'),
                 //truncate out the commit comments. We're guesing about where those start...
                 //assume first four lines are valid header info.
                 commit = status.git_spec_commit.split(/\r\n|\r|\n/)
@@ -40,7 +47,7 @@ define([
                 ]),
                 tr([
                     th('YAML/Spec Location'),
-                    td(a({href: methodSpecUrl, target: '_blank'}, methodSpecUrl))
+                    td(a({href: url, target: '_blank'}, label))
                 ]),
                 tr([
                     th('Method Spec Commit'),
@@ -120,7 +127,7 @@ define([
                     methodSpecs.map(function (methodSpec, index) {
                         return li([
                             span({style: {fontWeight: 'bold'}}, String(index + 1)), '. ',
-                            a({href: '#' + ['methodview', 'method', methodSpec.id].join('/')}, methodSpec.name)
+                            a({href: '#' + ['narrativestore', 'method', methodSpec.id].join('/')}, methodSpec.name)
                         ]);
                     }))
             });
@@ -129,7 +136,6 @@ define([
         function renderAppInfo(app, spec, methodSpecs, params) {
             // TODO: add dialog for screenshots
             return [
-                
             ];
         }
 
@@ -167,9 +173,9 @@ define([
                     renderAppSteps(methodSpecs, params),
                     utils.makeCollapsePanel({
                         open: true,
-                        title: 'Source', 
+                        title: 'Source',
                         content: renderNarrativeMethodStoreInfo(status, params)
-                    })                    
+                    })
                 ])
             ]);
         }
