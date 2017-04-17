@@ -1,26 +1,24 @@
-/*global define*/
-/*jslint white:true,browser:true*/
 define([
-    'kb/common/html'
-], function (html) {
+    'kb_common/html'
+], function(html) {
     'use strict';
 
     function makePath(pathList, query) {
         var path = pathList
-            .map(function (pathElement) {
+            .map(function(pathElement) {
                 return encodeURIComponent(pathElement);
             })
             .join('/'),
             queryString;
         if (query) {
-            Object.keys(query).map(function (key) {
-                return [key, query[key]].map(function (el) {
+            Object.keys(query).map(function(key) {
+                return [key, query[key]].map(function(el) {
                     return encodeURIComponent(el);
                 }).join('=');
             }).join('&');
         }
         return [path, queryString]
-            .filter(function (component) {
+            .filter(function(component) {
                 if (typeof component === 'undefined') {
                     return false;
                 }
@@ -29,6 +27,7 @@ define([
             .join('?');
 
     }
+
     function makeHashPath(pathList, query) {
         return '#' + makePath(pathList, query);
     }
@@ -37,25 +36,25 @@ define([
         if (typeof props === 'string') {
             props = [props];
         }
-        if (props.some(function (prop) {
-            var value = obj[prop];
-            if (value) {
-                if (typeof value === 'object') {
-                    if (value instanceof Array) {
-                        if (value.length > 0) {
-                            return true;
+        if (props.some(function(prop) {
+                var value = obj[prop];
+                if (value) {
+                    if (typeof value === 'object') {
+                        if (value instanceof Array) {
+                            if (value.length > 0) {
+                                return true;
+                            }
+                        } else {
+                            if (Object.keys(value).length > 0) {
+                                return true;
+                            }
                         }
                     } else {
-                        if (Object.keys(value).length > 0) {
-                            return true;
-                        }
+                        return true;
                     }
-                } else {
-                    return true;
                 }
-            }
-        })) {
-            return fun.apply(null, props.map(function (prop) {
+            })) {
+            return fun.apply(null, props.map(function(prop) {
                 return obj[prop];
             }));
         }
@@ -67,12 +66,12 @@ define([
             klass = arg.class || 'default',
             id = html.genId();
 
-        return div({class: 'panel panel-' + klass}, [
-            div({class: 'panel-heading', dataToggle: 'collapse', dataTarget: '#' + id, style: {cursor: 'pointer'}}, [
-                span({class: 'panel-title'}, arg.title)
+        return div({ class: 'panel panel-' + klass }, [
+            div({ class: 'panel-heading', dataToggle: 'collapse', dataTarget: '#' + id, style: { cursor: 'pointer' } }, [
+                span({ class: 'panel-title' }, arg.title)
             ]),
-            div({class: ['collapse', (arg.open ? 'in' : '')].join(' '), id: id}, [
-                div({class: 'panel-body'}, [
+            div({ class: ['collapse', (arg.open ? 'in' : '')].join(' '), id: id }, [
+                div({ class: 'panel-body' }, [
                     arg.content
                 ])
             ])
